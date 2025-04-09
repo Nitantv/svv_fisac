@@ -41,15 +41,10 @@ jobs:
       - name: Generate JaCoCo XML report
         run: |
           mkdir jacoco-report
-          java -jar lib\jacococli.jar report jacoco.exec ^
-            --classfiles . ^
-            --sourcefiles . ^
-            --html jacoco-report ^
-            --xml jacoco-report/jacoco.xml
+          java -jar lib\jacococli.jar report jacoco.exec --classfiles . --sourcefiles . --html jacoco-report --xml jacoco-report/jacoco.xml
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
