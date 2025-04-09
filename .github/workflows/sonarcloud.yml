@@ -4,24 +4,47 @@ on:
   push:
     branches:
       - main
-
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
-  build:
-    name: Build and analyze
+  sonarqube:
+    name: SonarQube
     runs-on: windows-latest
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - uses: SonarSource/sonarqube-scan-action@v4
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Download dependencies
+        run: |
+          if (-Not (Test-Path "lib")) { mkdir lib }
+
+          curl -L -o lib\junit-4.13.2.jar https://search.maven.org/remotecontent?filepath=junit/junit/4.13.2/junit-4.13.2.jar
+          curl -L -o lib\hamcrest-core-1.3.jar https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+          curl -L -o lib\jacococli.jar https://search.maven.org/remotecontent?filepath=org/jacoco/org.jacoco.cli/0.8.11/org.jacoco.cli-0.8.11-nodeps.jar
+          curl -L -o lib\jacocoagent.jar https://search.maven.org/remotecontent?filepath=org/jacoco/org.jacoco.agent/0.8.11/org.jacoco.agent-0.8.11-runtime.jar
+
+      - name: Compile Java code and tests
+        run: javac -cp "lib\*;." TaskManagementApp.java test\TaskManagerTest.java
+
+      - name: Run tests with JaCoCo agent
+        run: java -javaagent:lib\jacocoagent.jar=destfile=jacoco.exec -cp "lib\*;.;test" org.junit.runner.JUnitCore TaskManagerTest
+
+      - name: Generate JaCoCo XML report
+        run: |
+          if (-Not (Test-Path "jacoco-report")) { mkdir jacoco-report }
+          java -jar lib\jacococli.jar report jacoco.exec --classfiles . --sourcefiles . --html jacoco-report --xml jacoco-report/jacoco.xml
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      # If you wish to fail your job when the Quality Gate is red, uncomment the
-      # following lines. This would typically be used to fail a deployment.
-      # - uses: SonarSource/sonarqube-quality-gate-action@v1
-      #   timeout-minutes: 5
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
