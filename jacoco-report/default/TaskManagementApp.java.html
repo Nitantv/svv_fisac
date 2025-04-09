@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TaskManagementApp.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">TaskManagementApp.java</span></div><h1>TaskManagementApp.java</h1><pre class="source lang-java linenums">import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Task {
+    private String title;
+    private String description;
+    private String dueDate;
+    private String priority;
+    private boolean completed;
+
+<span class="nc" id="L12">    public Task(String title, String description, String dueDate, String priority) {</span>
+<span class="nc" id="L13">        this.title = title;</span>
+<span class="nc" id="L14">        this.description = description;</span>
+<span class="nc" id="L15">        this.dueDate = dueDate;</span>
+<span class="nc" id="L16">        this.priority = priority;</span>
+<span class="nc" id="L17">        this.completed = false; // Default status</span>
+<span class="nc" id="L18">    }</span>
+
+    // Getters and setters
+    public String getTitle() {
+<span class="nc" id="L22">        return title;</span>
+    }
+
+    public void setTitle(String title) {
+<span class="nc" id="L26">        this.title = title;</span>
+<span class="nc" id="L27">    }</span>
+
+    public String getDescription() {
+<span class="nc" id="L30">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="nc" id="L34">        this.description = description;</span>
+<span class="nc" id="L35">    }</span>
+
+    public String getDueDate() {
+<span class="nc" id="L38">        return dueDate;</span>
+    }
+
+    public void setDueDate(String dueDate) {
+<span class="nc" id="L42">        this.dueDate = dueDate;</span>
+<span class="nc" id="L43">    }</span>
+
+    public String getPriority() {
+<span class="nc" id="L46">        return priority;</span>
+    }
+
+    public void setPriority(String priority) {
+<span class="nc" id="L50">        this.priority = priority;</span>
+<span class="nc" id="L51">    }</span>
+
+    public boolean isCompleted() {
+<span class="nc" id="L54">        return completed;</span>
+    }
+
+    public void setCompleted(boolean completed) {
+<span class="nc" id="L58">        this.completed = completed;</span>
+<span class="nc" id="L59">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L63">        return &quot;Title: &quot; + title + &quot;\n&quot;</span>
+                + &quot;Description: &quot; + description + &quot;\n&quot;
+                + &quot;Due Date: &quot; + dueDate + &quot;\n&quot;
+                + &quot;Priority: &quot; + priority + &quot;\n&quot;
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                + &quot;Status: &quot; + (completed ? &quot;Completed&quot; : &quot;Not Completed&quot;) + &quot;\n&quot;;</span>
+    }
+}
+
+class TaskManager {
+    private List&lt;Task&gt; tasks;
+
+<span class="nc" id="L74">    public TaskManager() {</span>
+<span class="nc" id="L75">        this.tasks = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L76">    }</span>
+
+    public void addTask(Task task) {
+<span class="nc" id="L79">        tasks.add(task);</span>
+<span class="nc" id="L80">    }</span>
+
+    public void displayTasks() {
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (tasks.isEmpty()) {</span>
+<span class="nc" id="L84">            System.out.println(&quot;No tasks found.&quot;);</span>
+<span class="nc" id="L85">            return;</span>
+        }
+<span class="nc" id="L87">        System.out.println(&quot;Tasks:&quot;);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for (Task task : tasks) {</span>
+<span class="nc" id="L89">            System.out.println(task);</span>
+<span class="nc" id="L90">        }</span>
+<span class="nc" id="L91">    }</span>
+
+    public void editTask(int index, Task updatedTask) {
+<span class="nc bnc" id="L94" title="All 4 branches missed.">        if (index &gt;= 0 &amp;&amp; index &lt; tasks.size()) {</span>
+<span class="nc" id="L95">            tasks.set(index, updatedTask);</span>
+<span class="nc" id="L96">            System.out.println(&quot;Task updated successfully.&quot;);</span>
+        } else {
+<span class="nc" id="L98">            System.out.println(&quot;Invalid task index.&quot;);</span>
+        }
+<span class="nc" id="L100">    }</span>
+
+    public void deleteTask(int index) {
+<span class="nc bnc" id="L103" title="All 4 branches missed.">        if (index &gt;= 0 &amp;&amp; index &lt; tasks.size()) {</span>
+<span class="nc" id="L104">            tasks.remove(index);</span>
+<span class="nc" id="L105">            System.out.println(&quot;Task deleted successfully.&quot;);</span>
+        } else {
+<span class="nc" id="L107">            System.out.println(&quot;Invalid task index.&quot;);</span>
+        }
+<span class="nc" id="L109">    }</span>
+
+    public void markTaskAsComplete(int index) {
+<span class="nc bnc" id="L112" title="All 4 branches missed.">        if (index &gt;= 0 &amp;&amp; index &lt; tasks.size()) {</span>
+<span class="nc" id="L113">            Task task = tasks.get(index);</span>
+<span class="nc" id="L114">            task.setCompleted(true);</span>
+<span class="nc" id="L115">            tasks.set(index, task);</span>
+<span class="nc" id="L116">            System.out.println(&quot;Task marked as complete.&quot;);</span>
+<span class="nc" id="L117">        } else {</span>
+<span class="nc" id="L118">            System.out.println(&quot;Invalid task index.&quot;);</span>
+        }
+<span class="nc" id="L120">    }</span>
+}
+
+<span class="nc" id="L123">public class TaskManagementApp {</span>
+    public static void main(String[] args) {
+<span class="nc" id="L125">        Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L126">        TaskManager taskManager = new TaskManager();</span>
+
+<span class="nc" id="L128">        boolean exit = false;</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        while (!exit) {</span>
+<span class="nc" id="L130">            System.out.println(&quot;\nTask Management Menu:&quot;);</span>
+<span class="nc" id="L131">            System.out.println(&quot;1. View tasks&quot;);</span>
+<span class="nc" id="L132">            System.out.println(&quot;2. Add task&quot;);</span>
+<span class="nc" id="L133">            System.out.println(&quot;3. Edit task&quot;);</span>
+<span class="nc" id="L134">            System.out.println(&quot;4. Delete task&quot;);</span>
+<span class="nc" id="L135">            System.out.println(&quot;5. Mark task as complete&quot;);</span>
+<span class="nc" id="L136">            System.out.println(&quot;6. Exit&quot;);</span>
+<span class="nc" id="L137">            System.out.print(&quot;Enter your choice: &quot;);</span>
+<span class="nc" id="L138">            int choice = scanner.nextInt();</span>
+<span class="nc" id="L139">            scanner.nextLine(); // Consume newline</span>
+
+<span class="nc bnc" id="L141" title="All 7 branches missed.">            switch (choice) {</span>
+                case 1:
+<span class="nc" id="L143">                    taskManager.displayTasks();</span>
+<span class="nc" id="L144">                    break;</span>
+                case 2:
+<span class="nc" id="L146">                    System.out.print(&quot;Enter task title: &quot;);</span>
+<span class="nc" id="L147">                    String title = scanner.nextLine();</span>
+<span class="nc" id="L148">                    System.out.print(&quot;Enter task description: &quot;);</span>
+<span class="nc" id="L149">                    String description = scanner.nextLine();</span>
+<span class="nc" id="L150">                    System.out.print(&quot;Enter due date: &quot;);</span>
+<span class="nc" id="L151">                    String dueDate = scanner.nextLine();</span>
+<span class="nc" id="L152">                    System.out.print(&quot;Enter priority (High/Medium/Low): &quot;);</span>
+<span class="nc" id="L153">                    String priority = scanner.nextLine();</span>
+<span class="nc" id="L154">                    Task newTask = new Task(title, description, dueDate, priority);</span>
+<span class="nc" id="L155">                    taskManager.addTask(newTask);</span>
+<span class="nc" id="L156">                    System.out.println(&quot;Task added successfully.&quot;);</span>
+<span class="nc" id="L157">                    break;</span>
+                case 3:
+<span class="nc" id="L159">                    System.out.print(&quot;Enter index of task to edit: &quot;);</span>
+<span class="nc" id="L160">                    int editIndex = scanner.nextInt();</span>
+<span class="nc" id="L161">                    scanner.nextLine(); // Consume newline</span>
+<span class="nc" id="L162">                    System.out.print(&quot;Enter new title: &quot;);</span>
+<span class="nc" id="L163">                    String newTitle = scanner.nextLine();</span>
+<span class="nc" id="L164">                    System.out.print(&quot;Enter new description: &quot;);</span>
+<span class="nc" id="L165">                    String newDescription = scanner.nextLine();</span>
+<span class="nc" id="L166">                    System.out.print(&quot;Enter new due date: &quot;);</span>
+<span class="nc" id="L167">                    String newDueDate = scanner.nextLine();</span>
+<span class="nc" id="L168">                    System.out.print(&quot;Enter new priority (High/Medium/Low): &quot;);</span>
+<span class="nc" id="L169">                    String newPriority = scanner.nextLine();</span>
+<span class="nc" id="L170">                    Task updatedTask = new Task(newTitle, newDescription, newDueDate, newPriority);</span>
+<span class="nc" id="L171">                    taskManager.editTask(editIndex, updatedTask);</span>
+<span class="nc" id="L172">                    break;</span>
+                case 4:
+<span class="nc" id="L174">                    System.out.print(&quot;Enter index of task to delete: &quot;);</span>
+<span class="nc" id="L175">                    int deleteIndex = scanner.nextInt();</span>
+<span class="nc" id="L176">                    taskManager.deleteTask(deleteIndex);</span>
+<span class="nc" id="L177">                    break;</span>
+                case 5:
+<span class="nc" id="L179">                    System.out.print(&quot;Enter index of task to mark as complete: &quot;);</span>
+<span class="nc" id="L180">                    int completeIndex = scanner.nextInt();</span>
+<span class="nc" id="L181">                    taskManager.markTaskAsComplete(completeIndex);</span>
+<span class="nc" id="L182">                    break;</span>
+                case 6:
+<span class="nc" id="L184">                    exit = true;</span>
+<span class="nc" id="L185">                    break;</span>
+                default:
+<span class="nc" id="L187">                    System.out.println(&quot;Invalid choice. Please enter a valid option.&quot;);</span>
+            }
+<span class="nc" id="L189">        }</span>
+
+<span class="nc" id="L191">        System.out.println(&quot;Exiting Task Management App. Goodbye!&quot;);</span>
+<span class="nc" id="L192">        scanner.close();</span>
+<span class="nc" id="L193">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
