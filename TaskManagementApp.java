@@ -118,6 +118,10 @@ class TaskManager {
             System.out.println("Invalid task index.");
         }
     }
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
 }
 
 public class TaskManagementApp {
